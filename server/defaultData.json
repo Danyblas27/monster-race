@@ -1,0 +1,82 @@
+[
+  {
+    "number": 1,
+    "name": "Draculón",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "🧛",
+    "color": "#ef4444"
+  },
+  {
+    "number": 2,
+    "name": "Franky",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "🧟",
+    "color": "#22c55e"
+  },
+  {
+    "number": 3,
+    "name": "Momia Milenaria",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "🧻",
+    "color": "#eab308"
+  },
+  {
+    "number": 4,
+    "name": "Hombre Lobo",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "🐺",
+    "color": "#8b5cf6"
+  },
+  {
+    "number": 5,
+    "name": "Cíclope Feroz",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "👁️",
+    "color": "#06b6d4"
+  },
+  {
+    "number": 6,
+    "name": "Godzilla Kaiju",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "🦖",
+    "color": "#10b981"
+  },
+  {
+    "number": 7,
+    "name": "Fantasmín",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "👻",
+    "color": "#3b82f6"
+  },
+  {
+    "number": 8,
+    "name": "Pie Grande",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "🦶",
+    "color": "#f97316"
+  },
+  {
+    "number": 9,
+    "name": "Zombie Veloz",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "🧟‍♂️",
+    "color": "#ec4899"
+  },
+  {
+    "number": 10,
+    "name": "Gárgola Nocturna",
+    "votes": 0,
+    "memberships": [],
+    "emoji": "🦇",
+    "color": "#64748b"
+  }
+]

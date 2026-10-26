@@ -1,0 +1,16 @@
+services:
+  monster-race:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: monster_race_app
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATA_DIR=/app/data
+    volumes:
+      # Persistent host directory for data/monsters.json
+      - ./data:/app/data
