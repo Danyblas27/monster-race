@@ -6,8 +6,7 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "✝️",
-    "color": "#64748b"
+    "color": "#862FE0"
   },
   {
     "number": 2,
@@ -16,8 +15,7 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🔪",
-    "color": "#94a3b8"
+    "color": "#FFC341"
   },
   {
     "number": 3,
@@ -26,8 +24,7 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "⚡",
-    "color": "#22c55e"
+    "color": "#88E032"
   },
   {
     "number": 4,
@@ -36,8 +33,7 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🌺",
-    "color": "#f43f5e"
+    "color": "#FB702D"
   },
   {
     "number": 5,
@@ -46,8 +42,7 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🧟‍♂️",
-    "color": "#84cc16"
+    "color": "#88E032"
   },
   {
     "number": 6,
@@ -56,8 +51,7 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🕰️",
-    "color": "#a855f7"
+    "color": "#862FE0"
   },
   {
     "number": 7,
@@ -66,8 +60,7 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🧛",
-    "color": "#ef4444"
+    "color": "#FB702D"
   },
   {
     "number": 8,
@@ -76,8 +69,7 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🪆",
-    "color": "#fb923c"
+    "color": "#FFC341"
   },
   {
     "number": 9,
@@ -86,8 +78,7 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🎈",
-    "color": "#e11d48"
+    "color": "#FB702D"
   },
   {
     "number": 10,
@@ -96,7 +87,6 @@
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🎩",
-    "color": "#b45309"
+    "color": "#FFC341"
   }
 ]
