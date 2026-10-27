@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Hash, CheckCircle, Undo2 } from 'lucide-react';
+import MonsterAvatar from './MonsterAvatar';
 
 export default function VoteCaptureTab({
   monsters,
@@ -83,14 +84,13 @@ export default function VoteCaptureTab({
                     : 'bg-slate-950/70 border-slate-800 text-slate-300 hover:bg-slate-800/60 hover:border-slate-700'
                 }`}
               >
-                <div className="flex items-center gap-1 text-xs">
-                  <span>{monster.emoji}</span>
-                  <span>#{monster.number}</span>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <MonsterAvatar monster={monster} size="sm" />
                 </div>
-                <span className="text-[11px] truncate w-full text-slate-200 mt-0.5">
-                  {monster.name}
+                <span className="text-[11px] font-semibold truncate w-full text-slate-200">
+                  #{monster.number} {monster.name}
                 </span>
-                <span className="text-[10px] font-mono font-semibold text-slate-400 mt-1">
+                <span className="text-[10px] font-mono font-semibold text-slate-400 mt-0.5">
                   {monster.votes} {monster.votes === 1 ? 'vote' : 'votes'}
                 </span>
               </button>
@@ -111,7 +111,7 @@ export default function VoteCaptureTab({
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             {/* Target Monster Badge */}
             <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 shrink-0">
-              <span className="text-2xl">{currentMonsterObj?.emoji}</span>
+              <MonsterAvatar monster={currentMonsterObj} size="md" />
               <div>
                 <div className="text-[10px] uppercase font-bold text-slate-400">
                   Monster #{currentMonsterObj?.number}

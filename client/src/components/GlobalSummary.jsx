@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trophy, Users, ArrowRight } from 'lucide-react';
+import MonsterAvatar from './MonsterAvatar';
 
 export default function GlobalSummary({ monsters, totalVotes, onSelectMonster }) {
   // Sort descending by votes
@@ -30,7 +31,7 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
             <span>Leader Monster</span>
           </div>
           <div className="text-lg font-bold text-white truncate flex items-center gap-2">
-            <span>{leader?.emoji}</span>
+            <MonsterAvatar monster={leader} size="sm" />
             <span>{leader ? `#${leader.number} ${leader.name}` : '-'}</span>
           </div>
           <div className="text-[11px] text-slate-500 mt-1">
@@ -93,8 +94,8 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
                         : `${index + 1}`}
                     </td>
                     <td className="py-3 px-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xl">{monster.emoji}</span>
+                      <div className="flex items-center gap-2.5">
+                        <MonsterAvatar monster={monster} size="sm" />
                         <div>
                           <span className="font-bold text-white text-xs sm:text-sm">
                             #{monster.number} {monster.name}

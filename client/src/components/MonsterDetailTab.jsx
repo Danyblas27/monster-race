@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Plus, Minus, Trash2, UserPlus } from 'lucide-react';
+import MonsterAvatar from './MonsterAvatar';
 
 export default function MonsterDetailTab({
   monsters,
@@ -61,14 +62,13 @@ export default function MonsterDetailTab({
                     : 'bg-slate-950/70 border-slate-800 text-slate-300 hover:bg-slate-800/60 hover:border-slate-700'
                 }`}
               >
-                <div className="flex items-center gap-1 text-xs">
-                  <span>{m.emoji}</span>
-                  <span>#{m.number}</span>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <MonsterAvatar monster={m} size="sm" />
                 </div>
-                <span className="text-[11px] truncate w-full text-slate-200 mt-0.5">
-                  {m.name}
+                <span className="text-[11px] font-semibold truncate w-full text-slate-200">
+                  #{m.number} {m.name}
                 </span>
-                <span className="text-[10px] font-mono font-semibold text-slate-400 mt-1">
+                <span className="text-[10px] font-mono font-semibold text-slate-400 mt-0.5">
                   {m.votes} {m.votes === 1 ? 'vote' : 'votes'}
                 </span>
               </button>
@@ -81,7 +81,7 @@ export default function MonsterDetailTab({
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
           <div className="flex items-center gap-3">
-            <span className="text-3xl">{currentMonster.emoji}</span>
+            <MonsterAvatar monster={currentMonster} size="lg" />
             <div>
               <div className="flex items-center gap-2">
                 <span className="px-2 py-0.5 rounded text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">
