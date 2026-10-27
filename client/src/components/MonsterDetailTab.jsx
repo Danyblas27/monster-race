@@ -7,7 +7,9 @@ export default function MonsterDetailTab({
   selectedMonsterNumber,
   onSelectMonster,
   onAddVote,
-  onRemoveVote
+  onRemoveVote,
+  selectedDate = 'all',
+  today = ''
 }) {
   const [filterMembership, setFilterMembership] = useState('');
   const [quickMembership, setQuickMembership] = useState('');
@@ -23,6 +25,8 @@ export default function MonsterDetailTab({
     ? votersList.filter((v) => v.membership.includes(filterMembership.trim()))
     : votersList;
 
+  const targetVoteDate = selectedDate && selectedDate !== 'all' ? selectedDate : today;
+
   const handleQuickAdd = async (e) => {
     e?.preventDefault();
     setErrorMsg('');
@@ -35,7 +39,8 @@ export default function MonsterDetailTab({
     const success = await onAddVote({
       monsterNumber: currentMonster.number,
       membership: mem,
-      count: 1
+      count: 1,
+      date: targetVoteDate
     });
 
     if (success) {
@@ -249,7 +254,7 @@ export default function MonsterDetailTab({
                         <div className="inline-flex items-center gap-1.5">
                           {/* Add 1 vote button in Lime Green */}
                           <button
-                            onClick={() => onAddVote({ monsterNumber: currentMonster.number, membership: item.membership, count: 1 })}
+                            onClick={() => onAddVote({ monsterNumber: currentMonster.number, membership: item.membership, count: 1, date: targetVoteDate })}
                             className="p-1.5 rounded-lg bg-[#223117] hover:bg-[#2e431f] text-[#88E032] border border-[#88E032]/40 transition"
                             title={`Add 1 vote to membership ${item.membership}`}
                           >
@@ -258,7 +263,7 @@ export default function MonsterDetailTab({
 
                           {/* Minus 1 vote button in Golden Yellow */}
                           <button
-                            onClick={() => onRemoveVote(currentMonster.number, item.membership, 1, false)}
+                            onClick={() => onRemoveVote(currentMonster.number, item.membership, 1, false, selectedDate !== 'all' ? selectedDate : null)}
                             className="p-1.5 rounded-lg bg-[#3b2f18] hover:bg-[#504021] text-[#FFC341] border border-[#FFC341]/40 transition"
                             title={`Subtract 1 vote from membership ${item.membership}`}
                           >
@@ -268,8 +273,9 @@ export default function MonsterDetailTab({
                           {/* Delete all votes button */}
                           <button
                             onClick={() => {
-                              if (window.confirm(`Are you sure you want to delete all ${item.count} votes for membership ${item.membership} on ${currentMonster.name}?`)) {
-                                onRemoveVote(currentMonster.number, item.membership, item.count, true);
+                              const scope = selectedDate !== 'all' ? ` for date ${selectedDate}` : '';
+                              if (window.confirm(`Are you sure you want to delete all ${item.count} votes for membership ${item.membership} on ${currentMonster.name}${scope}?`)) {
+                                onRemoveVote(currentMonster.number, item.membership, item.count, true, selectedDate !== 'all' ? selectedDate : null);
                               }
                             }}
                             className="p-1.5 rounded-lg bg-[#3e1923] hover:bg-[#52212f] text-[#f43f5e] border border-[#f43f5e]/40 transition ml-1"

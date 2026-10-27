@@ -1,6 +1,9 @@
 import assert from 'assert';
 import {
   getMonsters,
+  getMonstersFiltered,
+  getAvailableDates,
+  getTodayDateString,
   recordVote,
   removeVote,
   findMembership,
@@ -67,7 +70,60 @@ assert.strictEqual(voter5555After, undefined, '5555 should be removed completely
 assert.strictEqual(m6AfterDel.votes, 1, 'Only 456 vote remains on monster 6');
 console.log('✅ Remove all votes for a membership works.');
 
-// 9. Reset all votes
+// 9. Multi-Day Voting & Filtering Tests
+const date1 = '2026-10-26';
+const date2 = '2026-10-27';
+
+// Vote on day 1
+recordVote({ monsterNumber: 2, membership: '777', date: date1 });
+recordVote({ monsterNumber: 2, membership: '777', date: date1 });
+recordVote({ monsterNumber: 4, membership: '888', date: date1 });
+
+// Vote on day 2
+recordVote({ monsterNumber: 2, membership: '777', date: date2 });
+recordVote({ monsterNumber: 4, membership: '999', date: date2 });
+
+// Test available dates
+const dates = getAvailableDates();
+assert.ok(dates.includes(date1), 'Available dates must include date1');
+assert.ok(dates.includes(date2), 'Available dates must include date2');
+console.log('✅ getAvailableDates correctly includes multi-day dates.');
+
+// Test filter for Day 1
+const day1Monsters = getMonstersFiltered(date1);
+const m2_day1 = day1Monsters.find(m => m.number === 2);
+const m4_day1 = day1Monsters.find(m => m.number === 4);
+assert.strictEqual(m2_day1.votes, 2, 'Monster 2 should have 2 votes on Day 1');
+assert.strictEqual(m4_day1.votes, 1, 'Monster 4 should have 1 vote on Day 1');
+
+// Test filter for Day 2
+const day2Monsters = getMonstersFiltered(date2);
+const m2_day2 = day2Monsters.find(m => m.number === 2);
+const m4_day2 = day2Monsters.find(m => m.number === 4);
+assert.strictEqual(m2_day2.votes, 1, 'Monster 2 should have 1 vote on Day 2');
+assert.strictEqual(m4_day2.votes, 1, 'Monster 4 should have 1 vote on Day 2');
+
+// Test All Days
+const allMonsters = getMonstersFiltered('all');
+const m2_all = allMonsters.find(m => m.number === 2);
+assert.strictEqual(m2_all.votes, 3, 'Monster 2 should have 3 votes total across all days');
+
+// Test membership search with byDate breakdown
+const search777 = findMembership('777');
+assert.strictEqual(search777.totalVotes, 3);
+assert.strictEqual(search777.breakdown[0].byDate[date1], 2);
+assert.strictEqual(search777.breakdown[0].byDate[date2], 1);
+console.log('✅ Multi-day voting, day filtering, and voter date breakdown passed.');
+
+// Test clearing votes for only Day 1
+resetAllVotes({ date: date1 });
+const day1AfterReset = getMonstersFiltered(date1);
+const day2AfterReset = getMonstersFiltered(date2);
+assert.strictEqual(day1AfterReset.find(m => m.number === 2).votes, 0, 'Day 1 votes cleared');
+assert.strictEqual(day2AfterReset.find(m => m.number === 2).votes, 1, 'Day 2 votes preserved');
+console.log('✅ Resetting votes for a single specific day works without affecting other days.');
+
+// 10. Reset all votes completely
 resetAllVotes();
 const allCleared = getMonsters().every(m => m.votes === 0 && m.memberships.length === 0 && m.votesByMembership.length === 0);
 assert.ok(allCleared, 'All votes must be reset to 0');

@@ -7,6 +7,9 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import {
   getMonsters,
+  getMonstersFiltered,
+  getAvailableDates,
+  getTodayDateString,
   recordVote,
   removeVote,
   findMembership,
@@ -37,8 +40,27 @@ app.use(express.json());
 // API Routes
 app.get('/api/monsters', (req, res) => {
   try {
-    const monsters = getMonsters();
-    res.json({ success: true, monsters });
+    const { date } = req.query;
+    const monsters = date ? getMonstersFiltered(date) : getMonsters();
+    res.json({
+      success: true,
+      monsters,
+      availableDates: getAvailableDates(),
+      today: getTodayDateString(),
+      selectedDate: date || 'all'
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.get('/api/dates', (req, res) => {
+  try {
+    res.json({
+      success: true,
+      availableDates: getAvailableDates(),
+      today: getTodayDateString()
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -46,22 +68,24 @@ app.get('/api/monsters', (req, res) => {
 
 app.post('/api/vote', (req, res) => {
   try {
-    const { monsterNumber, membership, count, deviceId } = req.body;
+    const { monsterNumber, membership, count, deviceId, date } = req.body;
     const result = recordVote({
       monsterNumber,
       membership,
       count: count || 1,
-      deviceId: deviceId || 'Dispositivo Web'
+      deviceId: deviceId || 'Web Device',
+      date
     });
 
     // Broadcast to all connected clients
     io.emit('monsters:updated', {
       monsters: result.monsters,
+      availableDates: getAvailableDates(),
       event: 'vote_added',
       vote: result.vote
     });
 
-    res.json({ success: true, ...result });
+    res.json({ success: true, ...result, availableDates: getAvailableDates() });
   } catch (error) {
     res.status(400).json({
       success: false,
@@ -73,22 +97,24 @@ app.post('/api/vote', (req, res) => {
 
 app.delete('/api/vote', (req, res) => {
   try {
-    const { monsterNumber, membership, count, all } = req.body;
+    const { monsterNumber, membership, count, all, date } = req.body;
     const result = removeVote({
       monsterNumber,
       membership,
       count: count || 1,
-      all: Boolean(all)
+      all: Boolean(all),
+      date
     });
 
     // Broadcast update
     io.emit('monsters:updated', {
       monsters: result.monsters,
+      availableDates: getAvailableDates(),
       event: 'vote_removed',
       removed: result.removed
     });
 
-    res.json({ success: true, ...result });
+    res.json({ success: true, ...result, availableDates: getAvailableDates() });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -105,13 +131,16 @@ app.get('/api/membership/:id', (req, res) => {
 
 app.post('/api/reset', (req, res) => {
   try {
-    const result = resetAllVotes();
+    const { date } = req.body || {};
+    const result = resetAllVotes({ date });
     io.emit('monsters:updated', {
       monsters: result.monsters,
+      availableDates: getAvailableDates(),
       event: 'reset',
+      clearedDate: result.clearedDate,
       timestamp: result.timestamp
     });
-    res.json({ success: true, ...result });
+    res.json({ success: true, ...result, availableDates: getAvailableDates() });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -164,9 +193,10 @@ app.post('/api/import', (req, res) => {
     saveMonsters(monsters);
     io.emit('monsters:updated', {
       monsters,
+      availableDates: getAvailableDates(),
       event: 'imported'
     });
-    res.json({ success: true, monsters });
+    res.json({ success: true, monsters, availableDates: getAvailableDates() });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -196,6 +226,8 @@ io.on('connection', (socket) => {
   // Send initial data to connected client
   socket.emit('monsters:init', {
     monsters: getMonsters(),
+    availableDates: getAvailableDates(),
+    today: getTodayDateString(),
     clientCount: connectedCount
   });
 
@@ -210,11 +242,12 @@ io.on('connection', (socket) => {
       const result = recordVote(data);
       io.emit('monsters:updated', {
         monsters: result.monsters,
+        availableDates: getAvailableDates(),
         event: 'vote_added',
         vote: result.vote
       });
       if (typeof callback === 'function') {
-        callback({ success: true, ...result });
+        callback({ success: true, ...result, availableDates: getAvailableDates() });
       }
     } catch (err) {
       if (typeof callback === 'function') {

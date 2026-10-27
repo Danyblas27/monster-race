@@ -2,7 +2,7 @@ import React from 'react';
 import { Trophy, Users, ArrowRight, Flame } from 'lucide-react';
 import MonsterAvatar from './MonsterAvatar';
 
-export default function GlobalSummary({ monsters, totalVotes, onSelectMonster }) {
+export default function GlobalSummary({ monsters, totalVotes, onSelectMonster, selectedDate = 'all', today = '' }) {
   // Sort descending by votes
   const sortedMonsters = [...monsters].sort((a, b) => b.votes - a.votes);
   const leader = sortedMonsters[0];
@@ -22,6 +22,11 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
     return `${index + 1}th`;
   };
 
+  const isDayFiltered = selectedDate && selectedDate !== 'all';
+  const tableTitle = isDayFiltered
+    ? `Standings for ${selectedDate === today ? `Today (${selectedDate})` : selectedDate}`
+    : 'Global Standings (All Days)';
+
   return (
     <div className="space-y-5">
       {/* KPI Cards */}
@@ -31,10 +36,12 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
           <div className="absolute top-0 right-0 w-24 h-24 bg-[#FB702D]/10 rounded-full blur-2xl pointer-events-none" />
           <div className="text-xs text-[#c9bfcc] font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
             <Flame className="w-3.5 h-3.5 text-[#FB702D]" />
-            <span>Total Votes Cast</span>
+            <span>{isDayFiltered ? 'Day Votes Cast' : 'Total Votes Cast'}</span>
           </div>
           <div className="text-3xl font-black text-white font-mono">{totalVotes}</div>
-          <div className="text-[11px] text-[#b8adb9] mt-1 font-medium">Recorded votes</div>
+          <div className="text-[11px] text-[#b8adb9] mt-1 font-medium">
+            {isDayFiltered ? `Recorded on ${selectedDate}` : 'All-time recorded votes'}
+          </div>
         </div>
 
         {/* KPI 2: Leader Monster */}
@@ -42,7 +49,7 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
           <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFC341]/10 rounded-full blur-2xl pointer-events-none" />
           <div className="text-xs text-[#c9bfcc] font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
             <Trophy className="w-3.5 h-3.5 text-[#FFC341]" />
-            <span>Leader Monster</span>
+            <span>{isDayFiltered ? 'Day Leader' : 'Overall Leader'}</span>
           </div>
           <div className="text-lg font-bold text-white truncate flex items-center gap-3">
             <MonsterAvatar monster={leader} size="md" className="rounded-xl shadow ring-1 ring-[#FFC341]/40" />
@@ -67,7 +74,9 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
             <span>Unique Voters</span>
           </div>
           <div className="text-3xl font-black text-white font-mono">{allUniqueMemberships.size}</div>
-          <div className="text-[11px] text-[#b8adb9] mt-1 font-medium">Distinct memberships counted</div>
+          <div className="text-[11px] text-[#b8adb9] mt-1 font-medium">
+            {isDayFiltered ? `Distinct memberships on ${selectedDate}` : 'Distinct memberships counted'}
+          </div>
         </div>
       </div>
 
@@ -76,9 +85,13 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
         <div className="p-4 border-b border-[#4d4250] flex items-center justify-between bg-[#2d272f]">
           <div>
             <h2 className="font-cinzel text-lg sm:text-xl font-bold text-white tracking-wide">
-              Global Standings (10 Monsters)
+              {tableTitle}
             </h2>
-            <p className="text-xs text-[#c9bfcc]">Ranked from highest to lowest vote count</p>
+            <p className="text-xs text-[#c9bfcc]">
+              {isDayFiltered
+                ? `Showing only ballots cast on ${selectedDate}`
+                : 'Ranked from highest to lowest vote count across all days'}
+            </p>
           </div>
         </div>
 

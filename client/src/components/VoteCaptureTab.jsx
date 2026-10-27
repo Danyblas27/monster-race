@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Hash, CheckCircle, Undo2, Check } from 'lucide-react';
+import { Send, Hash, CheckCircle, Undo2, Check, Calendar } from 'lucide-react';
 import MonsterAvatar from './MonsterAvatar';
 
 export default function VoteCaptureTab({
@@ -9,11 +9,24 @@ export default function VoteCaptureTab({
   onVoteSubmit,
   onRemoveVote,
   recentVotes,
-  submitting
+  submitting,
+  today = '',
+  selectedDate = 'all',
+  availableDates = []
 }) {
   const [membership, setMembership] = useState('');
   const [feedback, setFeedback] = useState(null);
+  const [ballotDate, setBallotDate] = useState(() => {
+    if (selectedDate && selectedDate !== 'all') return selectedDate;
+    return today || new Date().toISOString().split('T')[0];
+  });
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedDate && selectedDate !== 'all') {
+      setBallotDate(selectedDate);
+    }
+  }, [selectedDate]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -34,11 +47,12 @@ export default function VoteCaptureTab({
     const mem = membership.trim();
     if (!/^\d{3,4}$/.test(mem)) return;
 
-    // Always 1 vote per paper ballot submission
+    // Always 1 vote per paper ballot submission with the selected ballot date
     const success = await onVoteSubmit({
       monsterNumber: selectedMonster,
       membership: mem,
-      count: 1
+      count: 1,
+      date: ballotDate
     });
 
     if (success) {
@@ -47,6 +61,7 @@ export default function VoteCaptureTab({
         membership: mem,
         monsterName: currentMonsterObj.name,
         monsterNumber: selectedMonster,
+        date: ballotDate,
         newTotal: nextTotal
       });
       setMembership('');
@@ -135,10 +150,29 @@ export default function VoteCaptureTab({
 
       {/* Ballot Entry Form */}
       <div className="bg-[#373038] border border-[#4d4250] rounded-2xl p-4 sm:p-5 shadow-xl">
-        <div className="mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
           <span className="font-cinzel text-base sm:text-lg text-[#FFC341] font-bold tracking-wide block">
             Step 2: Enter Membership Number
           </span>
+          <div className="flex items-center gap-2 text-xs bg-[#211c22] px-3 py-1.5 rounded-xl border border-[#4d4250]">
+            <Calendar className="w-3.5 h-3.5 text-[#FB702D]" />
+            <span className="text-[#c9bfcc] font-bold">Ballot Date:</span>
+            <input
+              type="date"
+              value={ballotDate}
+              onChange={(e) => setBallotDate(e.target.value)}
+              className="bg-[#2a232b] border border-[#4d4250] rounded-lg px-2 py-1 text-white text-xs font-mono focus:outline-none focus:ring-1 focus:ring-[#FB702D]"
+            />
+            {ballotDate !== today && today && (
+              <button
+                type="button"
+                onClick={() => setBallotDate(today)}
+                className="text-[11px] text-[#88E032] hover:underline font-bold"
+              >
+                Today
+              </button>
+            )}
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3.5">
