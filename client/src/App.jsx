@@ -20,10 +20,24 @@ function computeVotesByMembership(memberships) {
     .sort((a, b) => b.count - a.count || a.membership.localeCompare(b.membership));
 }
 
+export function getMexicoDateString() {
+  try {
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Mexico_City',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+    return formatter.format(new Date());
+  } catch {
+    return new Date().toISOString().split('T')[0];
+  }
+}
+
 export default function App() {
   const [monsters, setMonsters] = useState([]);
   const [availableDates, setAvailableDates] = useState([]);
-  const [today, setToday] = useState(new Date().toISOString().split('T')[0]);
+  const [today, setToday] = useState(getMexicoDateString);
   const [selectedDate, setSelectedDate] = useState('all');
   const [connected, setConnected] = useState(false);
   const [clientCount, setClientCount] = useState(1);

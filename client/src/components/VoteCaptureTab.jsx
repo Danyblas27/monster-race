@@ -16,9 +16,23 @@ export default function VoteCaptureTab({
 }) {
   const [membership, setMembership] = useState('');
   const [feedback, setFeedback] = useState(null);
+
+  const getCdmxToday = () => {
+    try {
+      return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/Mexico_City',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).format(new Date());
+    } catch {
+      return new Date().toISOString().split('T')[0];
+    }
+  };
+
   const [ballotDate, setBallotDate] = useState(() => {
     if (selectedDate && selectedDate !== 'all') return selectedDate;
-    return today || new Date().toISOString().split('T')[0];
+    return today || getCdmxToday();
   });
   const inputRef = useRef(null);
 

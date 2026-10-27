@@ -16,6 +16,10 @@ RUN npm run build
 FROM node:22-alpine AS runner
 WORKDIR /app
 
+# Configure Mexico City (CDMX) Timezone
+RUN apk add --no-cache tzdata
+ENV TZ=America/Mexico_City
+
 # Environment variables
 ENV NODE_ENV=production
 ENV PORT=3001

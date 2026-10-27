@@ -52,7 +52,10 @@ export default function DateFilterBar({
       <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-thin">
         <div className="flex items-center gap-1.5 text-xs text-[#c9bfcc] font-bold uppercase tracking-wider shrink-0 mr-1 select-none">
           <Calendar className="w-3.5 h-3.5 text-[#FB702D]" />
-          <span>Filter Day:</span>
+          <span>Day:</span>
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#211c22] border border-[#4d4250] text-[#FFC341]" title="Timezone: America/Mexico_City">
+            CDMX
+          </span>
         </div>
 
         {/* All Days Button */}

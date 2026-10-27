@@ -17,6 +17,16 @@ const monsters = getMonsters();
 assert.strictEqual(monsters.length, 10, 'Must have exactly 10 monsters');
 console.log('✅ Initial 10 monsters loaded successfully.');
 
+// Verify CDMX Timezone date
+const cdmxExpected = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/Mexico_City',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit'
+}).format(new Date());
+assert.strictEqual(getTodayDateString(), cdmxExpected, 'getTodayDateString must match America/Mexico_City date');
+console.log(`✅ CDMX Date verified: ${getTodayDateString()}`);
+
 // Reset
 resetAllVotes();
 

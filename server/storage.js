@@ -22,14 +22,32 @@ let monstersCache = null;
 let writeQueue = Promise.resolve();
 
 /**
- * Returns today's date formatted as YYYY-MM-DD in local time
+ * Returns today's date formatted as YYYY-MM-DD in Mexico City (CDMX) timezone
  */
 export function getTodayDateString() {
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Mexico_City',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  return formatter.format(new Date());
+}
+
+/**
+ * Returns a readable timestamp in Mexico City (CDMX) timezone
+ */
+export function getMexicoTimestamp() {
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Mexico_City',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).format(new Date());
 }
 
 export function computeVotesByMembership(memberships) {
