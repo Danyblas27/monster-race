@@ -17,7 +17,8 @@ export default function MonsterAvatar({
     md: 'w-11 h-11 text-lg rounded-lg',
     lg: 'w-16 h-16 text-2xl rounded-xl',
     xl: 'w-24 h-24 text-4xl rounded-2xl',
-    card: 'w-full h-32 rounded-t-xl'
+    card: 'w-full h-44 rounded-t-xl',
+    fill: 'w-full h-full'
   };
 
   const imageSrc = monster?.image || `/monsters/${monster?.number}.png`;
