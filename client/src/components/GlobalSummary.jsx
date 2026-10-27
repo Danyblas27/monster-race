@@ -30,14 +30,18 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
             <Trophy className="w-3.5 h-3.5 text-amber-400" />
             <span>Leader Monster</span>
           </div>
-          <div className="text-lg font-bold text-white truncate flex items-center gap-2">
-            <MonsterAvatar monster={leader} size="sm" />
-            <span>{leader ? `#${leader.number} ${leader.name}` : '-'}</span>
-          </div>
-          <div className="text-[11px] text-slate-500 mt-1">
-            {leader && leader.votes > 0
-              ? `${leader.votes} votes (${totalVotes > 0 ? ((leader.votes / totalVotes) * 100).toFixed(1) : 0}%)`
-              : 'No votes recorded'}
+          <div className="text-lg font-bold text-white truncate flex items-center gap-3">
+            <MonsterAvatar monster={leader} size="lg" className="rounded-xl shadow" />
+            <div>
+              <div className="font-extrabold text-base text-white">
+                {leader ? `#${leader.number} ${leader.name}` : '-'}
+              </div>
+              <div className="text-[11px] text-slate-400 font-normal">
+                {leader && leader.votes > 0
+                  ? `${leader.votes} votes (${totalVotes > 0 ? ((leader.votes / totalVotes) * 100).toFixed(1) : 0}%)`
+                  : 'No votes recorded'}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -94,8 +98,8 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
                         : `${index + 1}`}
                     </td>
                     <td className="py-3 px-4">
-                      <div className="flex items-center gap-2.5">
-                        <MonsterAvatar monster={monster} size="sm" />
+                      <div className="flex items-center gap-3">
+                        <MonsterAvatar monster={monster} size="md" className="rounded-lg shadow" />
                         <div>
                           <span className="font-bold text-white text-xs sm:text-sm">
                             #{monster.number} {monster.name}

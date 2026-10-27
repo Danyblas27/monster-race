@@ -1,7 +1,68 @@
 [
   {
     "number": 1,
+    "name": "The Nun",
+    "image": "/monsters/01_the_nun.jpg",
+    "votes": 0,
+    "memberships": [],
+    "votesByMembership": [],
+    "emoji": "✝️",
+    "color": "#64748b"
+  },
+  {
+    "number": 2,
+    "name": "Ghostface",
+    "image": "/monsters/02_ghostface.jpg",
+    "votes": 0,
+    "memberships": [],
+    "votesByMembership": [],
+    "emoji": "🔪",
+    "color": "#94a3b8"
+  },
+  {
+    "number": 3,
+    "name": "Frankenstein",
+    "image": "/monsters/03_frankenstein.jpg",
+    "votes": 0,
+    "memberships": [],
+    "votesByMembership": [],
+    "emoji": "⚡",
+    "color": "#22c55e"
+  },
+  {
+    "number": 4,
+    "name": "Demogorgon",
+    "image": "/monsters/04_demogorgon.jpg",
+    "votes": 0,
+    "memberships": [],
+    "votesByMembership": [],
+    "emoji": "🌺",
+    "color": "#f43f5e"
+  },
+  {
+    "number": 5,
+    "name": "Zombie",
+    "image": "/monsters/05_zombie.jpg",
+    "votes": 0,
+    "memberships": [],
+    "votesByMembership": [],
+    "emoji": "🧟‍♂️",
+    "color": "#84cc16"
+  },
+  {
+    "number": 6,
+    "name": "Vecna",
+    "image": "/monsters/06_vecna.jpg",
+    "votes": 0,
+    "memberships": [],
+    "votesByMembership": [],
+    "emoji": "🕰️",
+    "color": "#a855f7"
+  },
+  {
+    "number": 7,
     "name": "Dracula",
+    "image": "/monsters/07_dracula.jpg",
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
@@ -9,84 +70,33 @@
     "color": "#ef4444"
   },
   {
-    "number": 2,
-    "name": "Frankenstein",
-    "votes": 0,
-    "memberships": [],
-    "votesByMembership": [],
-    "emoji": "🧟",
-    "color": "#22c55e"
-  },
-  {
-    "number": 3,
-    "name": "Ancient Mummy",
-    "votes": 0,
-    "memberships": [],
-    "votesByMembership": [],
-    "emoji": "🧻",
-    "color": "#eab308"
-  },
-  {
-    "number": 4,
-    "name": "Werewolf",
-    "votes": 0,
-    "memberships": [],
-    "votesByMembership": [],
-    "emoji": "🐺",
-    "color": "#8b5cf6"
-  },
-  {
-    "number": 5,
-    "name": "Cyclops",
-    "votes": 0,
-    "memberships": [],
-    "votesByMembership": [],
-    "emoji": "👁️",
-    "color": "#06b6d4"
-  },
-  {
-    "number": 6,
-    "name": "Godzilla",
-    "votes": 0,
-    "memberships": [],
-    "votesByMembership": [],
-    "emoji": "🦖",
-    "color": "#10b981"
-  },
-  {
-    "number": 7,
-    "name": "Ghost",
-    "votes": 0,
-    "memberships": [],
-    "votesByMembership": [],
-    "emoji": "👻",
-    "color": "#3b82f6"
-  },
-  {
     "number": 8,
-    "name": "Bigfoot",
+    "name": "Annabelle",
+    "image": "/monsters/08_annabelle.jpg",
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🦶",
-    "color": "#f97316"
+    "emoji": "🪆",
+    "color": "#fb923c"
   },
   {
     "number": 9,
-    "name": "Fast Zombie",
+    "name": "Pennywise",
+    "image": "/monsters/09_pennywise.jpg",
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🧟‍♂️",
-    "color": "#ec4899"
+    "emoji": "🎈",
+    "color": "#e11d48"
   },
   {
     "number": 10,
-    "name": "Night Gargoyle",
+    "name": "Freddy Fazbear",
+    "image": "/monsters/10_freddy_fazbear.jpg",
     "votes": 0,
     "memberships": [],
     "votesByMembership": [],
-    "emoji": "🦇",
-    "color": "#64748b"
+    "emoji": "🎩",
+    "color": "#b45309"
   }
 ]
