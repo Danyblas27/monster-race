@@ -63,7 +63,7 @@ export default function VoteCaptureTab({
         <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#4d4250]">
           <div>
             <h2 className="font-cinzel text-xl sm:text-2xl text-white font-bold tracking-wide">
-              Step 1: Select Monster from Ballot Paper
+              Step 1: Select Monster
             </h2>
             <p className="text-xs text-[#c9bfcc]">Click on any monster card below</p>
           </div>
@@ -137,7 +137,7 @@ export default function VoteCaptureTab({
       <div className="bg-[#373038] border border-[#4d4250] rounded-2xl p-4 sm:p-5 shadow-xl">
         <div className="mb-3">
           <span className="font-cinzel text-base sm:text-lg text-[#FFC341] font-bold tracking-wide block">
-            Step 2: Enter Membership Number from Ballot
+            Step 2: Enter Membership Number
           </span>
         </div>
 

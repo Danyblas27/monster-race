@@ -34,7 +34,7 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
             <span>Total Votes Cast</span>
           </div>
           <div className="text-3xl font-black text-white font-mono">{totalVotes}</div>
-          <div className="text-[11px] text-[#b8adb9] mt-1 font-medium">Recorded paper ballots</div>
+          <div className="text-[11px] text-[#b8adb9] mt-1 font-medium">Recorded votes</div>
         </div>
 
         {/* KPI 2: Leader Monster */}
