@@ -103,12 +103,12 @@ export function saveMonsters(data) {
 export function recordVote({ monsterNumber, membership, count = 1, deviceId = 'anon' }) {
   const num = parseInt(monsterNumber, 10);
   if (isNaN(num) || num < 1 || num > 10) {
-    throw new Error('El número del monstruo debe ser entre 1 y 10.');
+    throw new Error('Monster number must be between 1 and 10.');
   }
 
   const memStr = String(membership).trim();
   if (!/^\d{3,4}$/.test(memStr)) {
-    throw new Error('El número de membresía debe tener entre 3 y 4 dígitos numéricos.');
+    throw new Error('Membership number must be between 3 and 4 numeric digits.');
   }
 
   const addCount = Math.max(1, parseInt(count, 10) || 1);
@@ -116,7 +116,7 @@ export function recordVote({ monsterNumber, membership, count = 1, deviceId = 'a
   const monsters = getMonsters();
   const targetMonster = monsters.find((m) => m.number === num);
   if (!targetMonster) {
-    throw new Error(`Monstruo con número ${num} no encontrado.`);
+    throw new Error(`Monster #${num} not found.`);
   }
 
   // Push the membership addCount times
@@ -161,12 +161,12 @@ export function removeVote({ monsterNumber, membership, count = 1, all = false }
   const targetMonster = monsters.find((m) => m.number === num);
 
   if (!targetMonster) {
-    throw new Error(`Monstruo #${num} no encontrado.`);
+    throw new Error(`Monster #${num} not found.`);
   }
 
   const occurrences = targetMonster.memberships.filter((id) => id === memStr).length;
   if (occurrences === 0) {
-    throw new Error(`La membresía ${memStr} no tiene votos registrados en el monstruo #${num}.`);
+    throw new Error(`Membership ${memStr} has no votes registered for Monster #${num}.`);
   }
 
   if (all) {
@@ -258,7 +258,7 @@ export function updateMonster(number, updates) {
   const monsters = getMonsters();
   const monster = monsters.find((m) => m.number === num);
   if (!monster) {
-    throw new Error(`Monstruo #${num} no encontrado.`);
+    throw new Error(`Monster #${num} not found.`);
   }
 
   if (updates.name && typeof updates.name === 'string') {

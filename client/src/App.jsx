@@ -4,9 +4,7 @@ import Header from './components/Header';
 import GlobalSummary from './components/GlobalSummary';
 import MonsterDetailTab from './components/MonsterDetailTab';
 import VoteCaptureTab from './components/VoteCaptureTab';
-import MembershipSearchModal from './components/MembershipSearchModal';
-import SettingsModal from './components/SettingsModal';
-import { BarChart3, Users, CheckSquare, CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function App() {
   const [monsters, setMonsters] = useState([]);
@@ -17,10 +15,6 @@ export default function App() {
   const [recentVotes, setRecentVotes] = useState([]);
   const [notification, setNotification] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-
-  // Modals
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     if (socket.connected) {
@@ -63,18 +57,18 @@ export default function App() {
 
         showNotification({
           type: 'success',
-          text: `Voto registrado: Membresía #${v.membership} sumó ${v.addedCount || 1} voto(s) para #${v.monsterNumber} ${targetM?.name || ''}`
+          text: `Vote counted: Membership #${v.membership} added ${v.addedCount || 1} vote(s) to #${v.monsterNumber} ${targetM?.name || ''}`
         });
       } else if (payload.event === 'vote_removed' && payload.removed) {
         const r = payload.removed;
         showNotification({
           type: 'info',
-          text: `Se modificó el voto de la membresía #${r.membership} en el Monstruo #${r.monsterNumber}`
+          text: `Vote modified for membership #${r.membership} on Monster #${r.monsterNumber}`
         });
       } else if (payload.event === 'reset') {
         showNotification({
           type: 'info',
-          text: 'Votación reiniciada: todos los votos se restablecieron a cero.'
+          text: 'Voting reset: all votes have been cleared to zero.'
         });
       }
     };
@@ -122,7 +116,7 @@ export default function App() {
           monsterNumber,
           membership,
           count,
-          deviceId: 'Dispositivo Web'
+          deviceId: 'Web Device'
         })
       });
 
@@ -130,7 +124,7 @@ export default function App() {
       if (!data.success) {
         showNotification({
           type: 'error',
-          text: data.message || 'Error al registrar el voto'
+          text: data.message || 'Error recording vote'
         });
         return false;
       }
@@ -138,7 +132,7 @@ export default function App() {
     } catch (err) {
       showNotification({
         type: 'error',
-        text: err.message || 'Error de red'
+        text: err.message || 'Network error'
       });
       return false;
     } finally {
@@ -158,13 +152,13 @@ export default function App() {
       if (!data.success) {
         showNotification({
           type: 'error',
-          text: data.message || 'Error al eliminar el voto'
+          text: data.message || 'Error removing vote'
         });
       }
     } catch (err) {
       showNotification({
         type: 'error',
-        text: err.message || 'Error de red'
+        text: err.message || 'Network error'
       });
     }
   };
@@ -174,55 +168,6 @@ export default function App() {
     setSelectedMonsterNumber(number);
     setActiveTab('monsters');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Reset votes
-  const handleResetVotes = async () => {
-    try {
-      await fetch('/api/reset', { method: 'POST' });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // Restore defaults
-  const handleRestoreDefaults = async () => {
-    try {
-      await fetch('/api/restore-defaults', { method: 'POST' });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // Update monster
-  const handleUpdateMonster = async (number, updates) => {
-    try {
-      await fetch(`/api/monsters/${number}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates)
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // Export
-  const handleExport = () => {
-    window.location.href = '/api/export';
-  };
-
-  // Import
-  const handleImport = async (importedMonsters) => {
-    const res = await fetch('/api/import', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ monsters: importedMonsters })
-    });
-    const data = await res.json();
-    if (!data.success) {
-      throw new Error(data.message);
-    }
   };
 
   const totalVotes = monsters.reduce((acc, m) => acc + (m.votes || 0), 0);
@@ -249,64 +194,17 @@ export default function App() {
         </div>
       )}
 
-      {/* Header */}
+      {/* Header with Navigation Tabs */}
       <Header
         connected={connected}
         clientCount={clientCount}
-        totalVotes={totalVotes}
-        onOpenSearch={() => setSearchOpen(true)}
-        onOpenSettings={() => setSettingsOpen(true)}
-        onExport={handleExport}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
       />
 
       {/* Main Container */}
       <main className="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 space-y-5">
-        {/* Navigation Tabs Bar */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-2">
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
-            <button
-              onClick={() => setActiveTab('summary')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                activeTab === 'summary'
-                  ? 'bg-purple-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <BarChart3 className="w-4 h-4" />
-              <span>Resumen Global</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('monsters')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                activeTab === 'monsters'
-                  ? 'bg-purple-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Users className="w-4 h-4" />
-              <span>Detalle por Monstruo</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('capture')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                activeTab === 'capture'
-                  ? 'bg-purple-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <CheckSquare className="w-4 h-4" />
-              <span>Capturar Votos</span>
-            </button>
-          </div>
-
-          <div className="text-xs text-slate-400 font-mono">
-            Archivo persistente: <span className="text-purple-300">data/monsters.json</span>
-          </div>
-        </div>
-
-        {/* Tab 1: Resumen de votos global */}
+        {/* Tab 1: Global vote summary */}
         {activeTab === 'summary' && (
           <GlobalSummary
             monsters={monsters}
@@ -315,7 +213,7 @@ export default function App() {
           />
         )}
 
-        {/* Tab 2: Pestaña de Monstruos (con selector y tabla con membresía y cantidad de votos) */}
+        {/* Tab 2: Monsters Tab (monster selector and table with membership and vote count) */}
         {activeTab === 'monsters' && (
           <MonsterDetailTab
             monsters={monsters}
@@ -326,7 +224,7 @@ export default function App() {
           />
         )}
 
-        {/* Tab 3: Captura Rápida de Votos de papelitos */}
+        {/* Tab 3: Fast ballot vote capture */}
         {activeTab === 'capture' && (
           <VoteCaptureTab
             monsters={monsters}
@@ -342,28 +240,8 @@ export default function App() {
 
       {/* Footer */}
       <footer className="mt-auto border-t border-slate-800 bg-slate-950 py-3 text-center text-xs text-slate-500">
-        Carrera de Monstruos &bull; Sistema de Conteo de Votos
+        Monster Race &bull; Live Vote Counting System
       </footer>
-
-      {/* Modals */}
-      <MembershipSearchModal
-        isOpen={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        monsters={monsters}
-        onAddVote={handleVoteSubmit}
-        onRemoveVote={handleRemoveVote}
-      />
-
-      <SettingsModal
-        isOpen={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        monsters={monsters}
-        onResetVotes={handleResetVotes}
-        onRestoreDefaults={handleRestoreDefaults}
-        onUpdateMonster={handleUpdateMonster}
-        onExport={handleExport}
-        onImport={handleImport}
-      />
     </div>
   );
 }

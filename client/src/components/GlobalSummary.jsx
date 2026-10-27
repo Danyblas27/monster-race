@@ -15,36 +15,38 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <div className="text-xs text-slate-400 font-medium mb-1">Total de Votos Emitidos</div>
+          <div className="text-xs text-slate-400 font-medium mb-1">Total Votes Cast</div>
           <div className="text-2xl font-bold text-white font-mono">{totalVotes}</div>
-          <div className="text-[11px] text-slate-500 mt-1">Registrados en papelitos</div>
+          <div className="text-[11px] text-slate-500 mt-1">Recorded paper ballots</div>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
           <div className="text-xs text-slate-400 font-medium mb-1 flex items-center gap-1.5">
             <Trophy className="w-3.5 h-3.5 text-amber-400" />
-            <span>Monstruo Líder</span>
+            <span>Leader Monster</span>
           </div>
           <div className="text-lg font-bold text-white truncate flex items-center gap-2">
             <span>{leader?.emoji}</span>
             <span>{leader ? `#${leader.number} ${leader.name}` : '-'}</span>
           </div>
           <div className="text-[11px] text-slate-500 mt-1">
-            {leader ? `${leader.votes} votos (${totalVotes > 0 ? ((leader.votes / totalVotes) * 100).toFixed(1) : 0}%)` : 'Sin votos'}
+            {leader && leader.votes > 0
+              ? `${leader.votes} votes (${totalVotes > 0 ? ((leader.votes / totalVotes) * 100).toFixed(1) : 0}%)`
+              : 'No votes recorded'}
           </div>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
           <div className="text-xs text-slate-400 font-medium mb-1 flex items-center gap-1.5">
             <Users className="w-3.5 h-3.5 text-sky-400" />
-            <span>Membresías Únicas Participantes</span>
+            <span>Unique Participating Members</span>
           </div>
           <div className="text-2xl font-bold text-white font-mono">{allUniqueMemberships.size}</div>
-          <div className="text-[11px] text-slate-500 mt-1">Personas distintas que han votado</div>
+          <div className="text-[11px] text-slate-500 mt-1">Distinct voters counted</div>
         </div>
       </div>
 
@@ -52,8 +54,8 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
       <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
         <div className="p-4 border-b border-slate-800 flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-bold text-white">Tabla General de Votación (10 Monstruos)</h2>
-            <p className="text-xs text-slate-400">Ordenados de mayor a menor cantidad de votos</p>
+            <h2 className="text-sm font-bold text-white">Global Vote Standings (10 Monsters)</h2>
+            <p className="text-xs text-slate-400">Ranked by total votes in descending order</p>
           </div>
         </div>
 
@@ -61,13 +63,13 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
           <table className="w-full text-left border-collapse text-xs">
             <thead>
               <tr className="bg-slate-950/60 border-b border-slate-800 text-slate-400">
-                <th className="py-3 px-4 font-semibold w-12 text-center">Pos</th>
-                <th className="py-3 px-4 font-semibold">Monstruo</th>
-                <th className="py-3 px-4 font-semibold text-right">Votos Totales</th>
-                <th className="py-3 px-4 font-semibold text-right">% del Total</th>
-                <th className="py-3 px-4 font-semibold text-center">Membresías Únicas</th>
-                <th className="py-3 px-4 font-semibold w-48">Progreso</th>
-                <th className="py-3 px-4 font-semibold text-center w-28">Acción</th>
+                <th className="py-3 px-4 font-semibold w-12 text-center">Rank</th>
+                <th className="py-3 px-4 font-semibold">Monster</th>
+                <th className="py-3 px-4 font-semibold text-right">Total Votes</th>
+                <th className="py-3 px-4 font-semibold text-right">% of Total</th>
+                <th className="py-3 px-4 font-semibold text-center">Unique Members</th>
+                <th className="py-3 px-4 font-semibold w-48">Progress</th>
+                <th className="py-3 px-4 font-semibold text-center w-28">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/80">
@@ -82,7 +84,13 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
                     className="hover:bg-slate-800/40 transition"
                   >
                     <td className="py-3 px-4 text-center font-mono font-bold text-slate-400">
-                      {isLeader ? '🥇' : index === 1 && monster.votes > 0 ? '🥈' : index === 2 && monster.votes > 0 ? '🥉' : `${index + 1}º`}
+                      {isLeader
+                        ? '🥇'
+                        : index === 1 && monster.votes > 0
+                        ? '🥈'
+                        : index === 2 && monster.votes > 0
+                        ? '🥉'
+                        : `${index + 1}`}
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
@@ -119,7 +127,7 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
                         onClick={() => onSelectMonster(monster.number)}
                         className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition"
                       >
-                        <span>Ver detalle</span>
+                        <span>View Details</span>
                         <ArrowRight className="w-3 h-3 text-slate-400" />
                       </button>
                     </td>

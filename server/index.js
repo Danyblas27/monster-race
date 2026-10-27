@@ -148,7 +148,7 @@ app.get('/api/export', (req, res) => {
   try {
     const monsters = getMonsters();
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Disposition', 'attachment; filename="carrera_monstruos.json"');
+    res.setHeader('Content-Disposition', 'attachment; filename="monster_race.json"');
     res.send(JSON.stringify(monsters, null, 2));
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -159,7 +159,7 @@ app.post('/api/import', (req, res) => {
   try {
     const { monsters } = req.body;
     if (!Array.isArray(monsters) || monsters.length === 0) {
-      throw new Error('El formato del archivo JSON no es válido.');
+      throw new Error('Invalid JSON file format.');
     }
     saveMonsters(monsters);
     io.emit('monsters:updated', {
@@ -180,7 +180,7 @@ if (fs.existsSync(clientDistPath)) {
   app.use((req, res, next) => {
     // If request is for an API route that wasn't matched, return 404 json
     if (req.path.startsWith('/api')) {
-      return res.status(404).json({ success: false, message: 'Ruta no encontrada' });
+      return res.status(404).json({ success: false, message: 'Route not found' });
     }
     res.sendFile(path.join(clientDistPath, 'index.html'));
   });
@@ -231,6 +231,6 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Servidor Carrera de Monstruos escuchando en el puerto ${PORT}`);
-  console.log(`📡 WebSocket y API listos para sincronización multidispositivo`);
+  console.log(`🚀 Monster Race Server listening on port ${PORT}`);
+  console.log(`📡 WebSocket and REST API ready for multi-device sync`);
 });

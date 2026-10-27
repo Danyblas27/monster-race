@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Hash, CheckCircle, Undo2, Plus, Sparkles } from 'lucide-react';
+import { Send, Hash, CheckCircle, Undo2 } from 'lucide-react';
 
 export default function VoteCaptureTab({
   monsters,
@@ -63,8 +63,8 @@ export default function VoteCaptureTab({
       {/* 10 Monster Selection Grid */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-3">
         <div className="text-xs text-slate-400 font-medium mb-2 flex items-center justify-between">
-          <span>Paso 1: Selecciona el monstruo del papelito</span>
-          <span className="text-[11px] text-slate-500">Atajo: Alt + 1..0</span>
+          <span>Step 1: Select monster from ballot paper</span>
+          <span className="text-[11px] text-slate-500">Shortcut: Alt + 1..0</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-1.5">
           {monsters.map((monster) => {
@@ -91,7 +91,7 @@ export default function VoteCaptureTab({
                   {monster.name}
                 </span>
                 <span className="text-[10px] font-mono font-semibold text-slate-400 mt-1">
-                  {monster.votes} votos
+                  {monster.votes} {monster.votes === 1 ? 'vote' : 'votes'}
                 </span>
               </button>
             );
@@ -103,7 +103,7 @@ export default function VoteCaptureTab({
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
         <div className="mb-3">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-            Paso 2: Digita el número de membresía del papel
+            Step 2: Enter membership number from ballot
           </span>
         </div>
 
@@ -114,7 +114,7 @@ export default function VoteCaptureTab({
               <span className="text-2xl">{currentMonsterObj?.emoji}</span>
               <div>
                 <div className="text-[10px] uppercase font-bold text-slate-400">
-                  Monstruo #{currentMonsterObj?.number}
+                  Monster #{currentMonsterObj?.number}
                 </div>
                 <div className="font-bold text-sm text-white">
                   {currentMonsterObj?.name}
@@ -137,7 +137,7 @@ export default function VoteCaptureTab({
                   const val = e.target.value.replace(/\D/g, '');
                   if (val.length <= 4) setMembership(val);
                 }}
-                placeholder="Número de membresía (3-4 dígitos)"
+                placeholder="Membership number (3-4 digits)"
                 className="w-full pl-9 pr-16 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-base font-mono text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
                 autoFocus
               />
@@ -148,7 +148,7 @@ export default function VoteCaptureTab({
 
             {/* Quantity */}
             <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 shrink-0">
-              <span className="text-xs text-slate-400">Cant:</span>
+              <span className="text-xs text-slate-400">Qty:</span>
               <input
                 type="number"
                 min="1"
@@ -170,7 +170,7 @@ export default function VoteCaptureTab({
               }`}
             >
               <Send className="w-3.5 h-3.5" />
-              <span>Contar Voto</span>
+              <span>Count Vote</span>
               <kbd className="hidden sm:inline text-[10px] bg-slate-900 px-1 py-0.5 rounded text-slate-400 border border-slate-700">
                 ↵ Enter
               </kbd>
@@ -181,11 +181,11 @@ export default function VoteCaptureTab({
           {membership.length >= 3 && /^\d{3,4}$/.test(membership) && (
             <div className="text-xs text-slate-300 bg-slate-950 px-3 py-2 rounded-lg border border-slate-800 flex items-center justify-between">
               <span>
-                Membresía <strong className="text-white font-mono">{membership}</strong>
+                Membership <strong className="text-white font-mono">{membership}</strong>
                 {existingCount > 0 ? (
-                  <>: ya tiene <strong className="text-purple-300 font-mono">{existingCount}</strong> {existingCount === 1 ? 'voto registrado' : 'votos registrados'} en este monstruo. Se sumará otro al presionar Enter.</>
+                  <>: already has <strong className="text-purple-300 font-mono">{existingCount}</strong> {existingCount === 1 ? 'vote registered' : 'votes registered'} for this monster. Another vote will be added upon pressing Enter.</>
                 ) : (
-                  <>: sin votos previos en este monstruo. Se registrará su primer voto.</>
+                  <>: no previous votes for this monster. First vote will be registered.</>
                 )}
               </span>
             </div>
@@ -196,7 +196,7 @@ export default function VoteCaptureTab({
             <div className="text-xs text-emerald-400 bg-emerald-950/30 border border-emerald-800/40 px-3 py-2 rounded-lg flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
               <span>
-                ¡Voto registrado! Membresía <strong>#{feedback.membership}</strong> sumó {feedback.count} {feedback.count === 1 ? 'voto' : 'votos'} para <strong>{feedback.monsterEmoji} #{feedback.monsterNumber} {feedback.monsterName}</strong> (total de esta membresía en este monstruo: {feedback.newTotal}).
+                Vote counted! Membership <strong>#{feedback.membership}</strong> added {feedback.count} {feedback.count === 1 ? 'vote' : 'votes'} to <strong>{feedback.monsterEmoji} #{feedback.monsterNumber} {feedback.monsterName}</strong> (member total on this monster: {feedback.newTotal}).
               </span>
             </div>
           )}
@@ -206,7 +206,7 @@ export default function VoteCaptureTab({
         {recentVotes && recentVotes.length > 0 && (
           <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between gap-2 overflow-x-auto text-xs">
             <span className="text-slate-400 text-xs shrink-0 font-medium">
-              Últimos votos ingresados:
+              Recent votes entered:
             </span>
             <div className="flex items-center gap-1.5 overflow-x-auto py-0.5">
               {recentVotes.slice(0, 5).map((rv, idx) => (
@@ -219,7 +219,7 @@ export default function VoteCaptureTab({
                   <button
                     onClick={() => onRemoveVote(rv.monsterNumber, rv.membership, 1, false)}
                     className="text-slate-400 hover:text-rose-400 p-0.5"
-                    title="Deshacer este voto"
+                    title="Undo this vote"
                   >
                     <Undo2 className="w-3 h-3" />
                   </button>

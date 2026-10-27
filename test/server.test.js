@@ -105,7 +105,7 @@ async function run() {
       }).on('error', reject);
     });
     assert.strictEqual(res3.statusCode, 200);
-    assert.ok(res3.body.includes('Carrera de Monstruos'));
+    assert.ok(res3.body.includes('Monster Race'));
     console.log('✅ Static frontend served correctly by Express.');
 
     // 5. Clean up test data by resetting

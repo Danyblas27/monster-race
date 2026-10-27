@@ -7,7 +7,7 @@ import {
   resetAllVotes
 } from '../server/storage.js';
 
-console.log('🧪 Running updated tests for Monster Race Voting System...');
+console.log('🧪 Running tests for Monster Race Voting System...');
 
 // 1. Initial monsters
 const monsters = getMonsters();

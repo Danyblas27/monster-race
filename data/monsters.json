@@ -1,92 +1,92 @@
 [
   {
     "number": 1,
-    "name": "Draculón",
+    "name": "Dracula",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "🧛",
-    "color": "#ef4444",
-    "votesByMembership": []
+    "color": "#ef4444"
   },
   {
     "number": 2,
-    "name": "Franky",
+    "name": "Frankenstein",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "🧟",
-    "color": "#22c55e",
-    "votesByMembership": []
+    "color": "#22c55e"
   },
   {
     "number": 3,
-    "name": "Momia Milenaria",
+    "name": "Ancient Mummy",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "🧻",
-    "color": "#eab308",
-    "votesByMembership": []
+    "color": "#eab308"
   },
   {
     "number": 4,
-    "name": "Hombre Lobo",
+    "name": "Werewolf",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "🐺",
-    "color": "#8b5cf6",
-    "votesByMembership": []
+    "color": "#8b5cf6"
   },
   {
     "number": 5,
-    "name": "Cíclope Feroz",
+    "name": "Cyclops",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "👁️",
-    "color": "#06b6d4",
-    "votesByMembership": []
+    "color": "#06b6d4"
   },
   {
     "number": 6,
-    "name": "Godzilla Kaiju",
+    "name": "Godzilla",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "🦖",
-    "color": "#10b981",
-    "votesByMembership": []
+    "color": "#10b981"
   },
   {
     "number": 7,
-    "name": "Fantasmín",
+    "name": "Ghost",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "👻",
-    "color": "#3b82f6",
-    "votesByMembership": []
+    "color": "#3b82f6"
   },
   {
     "number": 8,
-    "name": "Pie Grande",
+    "name": "Bigfoot",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "🦶",
-    "color": "#f97316",
-    "votesByMembership": []
+    "color": "#f97316"
   },
   {
     "number": 9,
-    "name": "Zombie Veloz",
+    "name": "Fast Zombie",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "🧟‍♂️",
-    "color": "#ec4899",
-    "votesByMembership": []
+    "color": "#ec4899"
   },
   {
     "number": 10,
-    "name": "Gárgola Nocturna",
+    "name": "Night Gargoyle",
     "votes": 0,
     "memberships": [],
+    "votesByMembership": [],
     "emoji": "🦇",
-    "color": "#64748b",
-    "votesByMembership": []
+    "color": "#64748b"
   }
 ]
