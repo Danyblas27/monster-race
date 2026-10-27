@@ -46,11 +46,11 @@ app.get('/api/monsters', (req, res) => {
 
 app.post('/api/vote', (req, res) => {
   try {
-    const { monsterNumber, membership, allowTransfer, deviceId } = req.body;
+    const { monsterNumber, membership, count, deviceId } = req.body;
     const result = recordVote({
       monsterNumber,
       membership,
-      allowTransfer: Boolean(allowTransfer),
+      count: count || 1,
       deviceId: deviceId || 'Dispositivo Web'
     });
 
@@ -66,16 +66,20 @@ app.post('/api/vote', (req, res) => {
     res.status(400).json({
       success: false,
       message: error.message,
-      code: error.code || 'BAD_REQUEST',
-      previousMonster: error.previousMonster || null
+      code: error.code || 'BAD_REQUEST'
     });
   }
 });
 
 app.delete('/api/vote', (req, res) => {
   try {
-    const { monsterNumber, membership } = req.body;
-    const result = removeVote({ monsterNumber, membership });
+    const { monsterNumber, membership, count, all } = req.body;
+    const result = removeVote({
+      monsterNumber,
+      membership,
+      count: count || 1,
+      all: Boolean(all)
+    });
 
     // Broadcast update
     io.emit('monsters:updated', {

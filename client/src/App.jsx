@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { socket } from './socket';
 import Header from './components/Header';
-import VoteForm from './components/VoteForm';
-import RaceTrack from './components/RaceTrack';
-import MonsterCards from './components/MonsterCards';
+import GlobalSummary from './components/GlobalSummary';
+import MonsterDetailTab from './components/MonsterDetailTab';
+import VoteCaptureTab from './components/VoteCaptureTab';
 import MembershipSearchModal from './components/MembershipSearchModal';
 import SettingsModal from './components/SettingsModal';
-import { playSuccessSound, playErrorSound, playCelebrationFanfare } from './utils/sound';
-import { LayoutGrid, Gauge, ListFilter, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { BarChart3, Users, CheckSquare, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function App() {
   const [monsters, setMonsters] = useState([]);
   const [connected, setConnected] = useState(false);
   const [clientCount, setClientCount] = useState(1);
-  const [selectedMonster, setSelectedMonster] = useState(1);
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [activeTab, setActiveTab] = useState('summary'); // 'summary' | 'monsters' | 'capture'
+  const [selectedMonsterNumber, setSelectedMonsterNumber] = useState(1);
   const [recentVotes, setRecentVotes] = useState([]);
   const [notification, setNotification] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -23,37 +22,21 @@ export default function App() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  // View Mode: 'all' | 'race' | 'cards'
-  const [viewMode, setViewMode] = useState('all');
-
-  // Load initial data and setup socket listeners
   useEffect(() => {
-    // Check initial connection
     if (socket.connected) {
       setConnected(true);
     }
 
-    const onConnect = () => {
-      setConnected(true);
-    };
-
-    const onDisconnect = () => {
-      setConnected(false);
-    };
+    const onConnect = () => setConnected(true);
+    const onDisconnect = () => setConnected(false);
 
     const onInit = (data) => {
-      if (data?.monsters) {
-        setMonsters(data.monsters);
-      }
-      if (data?.clientCount) {
-        setClientCount(data.clientCount);
-      }
+      if (data?.monsters) setMonsters(data.monsters);
+      if (data?.clientCount) setClientCount(data.clientCount);
     };
 
     const onClientsUpdate = (data) => {
-      if (data?.count !== undefined) {
-        setClientCount(data.count);
-      }
+      if (data?.count !== undefined) setClientCount(data.count);
     };
 
     const onMonstersUpdated = (payload) => {
@@ -61,45 +44,37 @@ export default function App() {
         setMonsters(payload.monsters);
       }
 
-      // Show notification and sound
       if (payload.event === 'vote_added' && payload.vote) {
         const v = payload.vote;
-        const targetM = payload.monsters.find(m => m.number === v.monsterNumber);
-        
-        // Add to recent votes
-        setRecentVotes(prev => [
+        const targetM = payload.monsters.find((m) => m.number === v.monsterNumber);
+
+        setRecentVotes((prev) => [
           {
             id: Date.now() + Math.random(),
             monsterNumber: v.monsterNumber,
             monsterName: v.monsterName || targetM?.name,
             monsterEmoji: targetM?.emoji,
             membership: v.membership,
+            addedCount: v.addedCount || 1,
             timestamp: v.timestamp
           },
           ...prev.slice(0, 9)
         ]);
 
-        showToast({
+        showNotification({
           type: 'success',
-          title: `¡Voto registrado!`,
-          message: `Membresía #${v.membership} votó por ${targetM?.emoji || ''} #${v.monsterNumber} ${v.monsterName || targetM?.name}`
+          text: `Voto registrado: Membresía #${v.membership} sumó ${v.addedCount || 1} voto(s) para #${v.monsterNumber} ${targetM?.name || ''}`
         });
-
-        if (soundEnabled) {
-          playSuccessSound();
-        }
       } else if (payload.event === 'vote_removed' && payload.removed) {
         const r = payload.removed;
-        showToast({
+        showNotification({
           type: 'info',
-          title: 'Voto eliminado',
-          message: `Se anuló el voto de la membresía #${r.membership} para el Monstruo #${r.monsterNumber}`
+          text: `Se modificó el voto de la membresía #${r.membership} en el Monstruo #${r.monsterNumber}`
         });
       } else if (payload.event === 'reset') {
-        showToast({
-          type: 'warning',
-          title: 'Carrera Reiniciada',
-          message: 'Todos los votos han sido reiniciados a cero.'
+        showNotification({
+          type: 'info',
+          text: 'Votación reiniciada: todos los votos se restablecieron a cero.'
         });
       }
     };
@@ -110,7 +85,7 @@ export default function App() {
     socket.on('stats:clients', onClientsUpdate);
     socket.on('monsters:updated', onMonstersUpdated);
 
-    // Fallback initial REST fetch
+    // Initial fetch
     fetch('/api/monsters')
       .then((res) => res.json())
       .then((data) => {
@@ -127,17 +102,17 @@ export default function App() {
       socket.off('stats:clients', onClientsUpdate);
       socket.off('monsters:updated', onMonstersUpdated);
     };
-  }, [soundEnabled]);
+  }, []);
 
-  const showToast = ({ type, title, message }) => {
-    setNotification({ type, title, message });
+  const showNotification = ({ type, text }) => {
+    setNotification({ type, text });
     setTimeout(() => {
-      setNotification((curr) => (curr?.message === message ? null : curr));
-    }, 4500);
+      setNotification((curr) => (curr?.text === text ? null : curr));
+    }, 4000);
   };
 
   // Submit Vote
-  const handleVoteSubmit = async ({ monsterNumber, membership, allowTransfer }) => {
+  const handleVoteSubmit = async ({ monsterNumber, membership, count = 1 }) => {
     setSubmitting(true);
     try {
       const res = await fetch('/api/vote', {
@@ -146,29 +121,25 @@ export default function App() {
         body: JSON.stringify({
           monsterNumber,
           membership,
-          allowTransfer,
-          deviceId: `Dispositivo ${Math.floor(Math.random() * 1000)}`
+          count,
+          deviceId: 'Dispositivo Web'
         })
       });
 
       const data = await res.json();
       if (!data.success) {
-        showToast({
+        showNotification({
           type: 'error',
-          title: 'Error al registrar',
-          message: data.message
+          text: data.message || 'Error al registrar el voto'
         });
-        if (soundEnabled) playErrorSound();
         return false;
       }
       return true;
     } catch (err) {
-      showToast({
+      showNotification({
         type: 'error',
-        title: 'Error de red',
-        message: err.message
+        text: err.message || 'Error de red'
       });
-      if (soundEnabled) playErrorSound();
       return false;
     } finally {
       setSubmitting(false);
@@ -176,31 +147,36 @@ export default function App() {
   };
 
   // Remove Vote
-  const handleRemoveVote = async (monsterNumber, membership) => {
+  const handleRemoveVote = async (monsterNumber, membership, count = 1, all = false) => {
     try {
       const res = await fetch('/api/vote', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ monsterNumber, membership })
+        body: JSON.stringify({ monsterNumber, membership, count, all })
       });
       const data = await res.json();
       if (!data.success) {
-        showToast({
+        showNotification({
           type: 'error',
-          title: 'Error al eliminar',
-          message: data.message
+          text: data.message || 'Error al eliminar el voto'
         });
       }
     } catch (err) {
-      showToast({
+      showNotification({
         type: 'error',
-        title: 'Error de red',
-        message: err.message
+        text: err.message || 'Error de red'
       });
     }
   };
 
-  // Reset all votes
+  // Select monster and navigate to monsters tab
+  const handleNavigateToMonster = (number) => {
+    setSelectedMonsterNumber(number);
+    setActiveTab('monsters');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Reset votes
   const handleResetVotes = async () => {
     try {
       await fetch('/api/reset', { method: 'POST' });
@@ -231,12 +207,12 @@ export default function App() {
     }
   };
 
-  // Export JSON file
+  // Export
   const handleExport = () => {
     window.location.href = '/api/export';
   };
 
-  // Import JSON data
+  // Import
   const handleImport = async (importedMonsters) => {
     const res = await fetch('/api/import', {
       method: 'POST',
@@ -252,124 +228,121 @@ export default function App() {
   const totalVotes = monsters.reduce((acc, m) => acc + (m.votes || 0), 0);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-purple-600 selection:text-white">
+    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col font-sans">
       {/* Toast Notification */}
       {notification && (
-        <div className="fixed top-20 right-4 z-50 max-w-sm w-full p-4 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl animate-bounce-short">
-          <div className="flex items-start gap-3">
-            {notification.type === 'success' && <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />}
-            {notification.type === 'error' && <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />}
-            {notification.type === 'warning' && <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />}
-            {notification.type === 'info' && <CheckCircle2 className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />}
-            <div className="flex-1">
-              <h4 className="text-sm font-bold text-white">{notification.title}</h4>
-              <p className="text-xs text-slate-300 mt-0.5">{notification.message}</p>
-            </div>
-            <button
-              onClick={() => setNotification(null)}
-              className="text-slate-500 hover:text-white text-xs"
-            >
-              ✕
-            </button>
+        <div className="fixed top-16 right-4 z-50 max-w-sm w-full p-3 rounded-xl bg-slate-950 border border-slate-700 shadow-xl text-xs flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            {notification.type === 'error' ? (
+              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+            ) : (
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            )}
+            <span className="text-slate-200">{notification.text}</span>
           </div>
+          <button
+            onClick={() => setNotification(null)}
+            className="text-slate-500 hover:text-white ml-2"
+          >
+            ✕
+          </button>
         </div>
       )}
 
-      {/* Top Header */}
+      {/* Header */}
       <Header
         connected={connected}
         clientCount={clientCount}
         totalVotes={totalVotes}
-        soundEnabled={soundEnabled}
-        setSoundEnabled={setSoundEnabled}
         onOpenSearch={() => setSearchOpen(true)}
         onOpenSettings={() => setSettingsOpen(true)}
         onExport={handleExport}
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
-        {/* Navigation Tabs (All, Track, Detail Cards) */}
-        <div className="flex items-center justify-between flex-wrap gap-3 pb-2">
-          <div className="flex items-center gap-1.5 p-1 bg-slate-900/80 border border-slate-800 rounded-2xl">
+      <main className="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 space-y-5">
+        {/* Navigation Tabs Bar */}
+        <div className="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-2">
+          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
             <button
-              onClick={() => setViewMode('all')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
-                viewMode === 'all'
-                  ? 'bg-purple-600 text-white shadow-md'
+              onClick={() => setActiveTab('summary')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                activeTab === 'summary'
+                  ? 'bg-purple-600 text-white shadow'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              <span>Vista Completa</span>
+              <BarChart3 className="w-4 h-4" />
+              <span>Resumen Global</span>
             </button>
+
             <button
-              onClick={() => setViewMode('race')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
-                viewMode === 'race'
-                  ? 'bg-purple-600 text-white shadow-md'
+              onClick={() => setActiveTab('monsters')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                activeTab === 'monsters'
+                  ? 'bg-purple-600 text-white shadow'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Gauge className="w-3.5 h-3.5" />
-              <span>Pista de Carrera</span>
+              <Users className="w-4 h-4" />
+              <span>Detalle por Monstruo</span>
             </button>
+
             <button
-              onClick={() => setViewMode('cards')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
-                viewMode === 'cards'
-                  ? 'bg-purple-600 text-white shadow-md'
+              onClick={() => setActiveTab('capture')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                activeTab === 'capture'
+                  ? 'bg-purple-600 text-white shadow'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              <ListFilter className="w-3.5 h-3.5" />
-              <span>Lista de Membresías</span>
+              <CheckSquare className="w-4 h-4" />
+              <span>Capturar Votos</span>
             </button>
           </div>
 
-          <div className="text-xs text-slate-400 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Persistencia en JSON activa (<code className="text-purple-300">data/monsters.json</code>)</span>
+          <div className="text-xs text-slate-400 font-mono">
+            Archivo persistente: <span className="text-purple-300">data/monsters.json</span>
           </div>
         </div>
 
-        {/* 1. Fast Ballot Entry Form (Always prominent) */}
-        <VoteForm
-          monsters={monsters}
-          selectedMonster={selectedMonster}
-          setSelectedMonster={setSelectedMonster}
-          onVoteSubmit={handleVoteSubmit}
-          onRemoveVote={handleRemoveVote}
-          recentVotes={recentVotes}
-          submitting={submitting}
-        />
-
-        {/* 2. Race Track Visualizer */}
-        {(viewMode === 'all' || viewMode === 'race') && (
-          <RaceTrack
+        {/* Tab 1: Resumen de votos global */}
+        {activeTab === 'summary' && (
+          <GlobalSummary
             monsters={monsters}
             totalVotes={totalVotes}
-            onTriggerConfetti={() => soundEnabled && playCelebrationFanfare()}
+            onSelectMonster={handleNavigateToMonster}
           />
         )}
 
-        {/* 3. Detailed Monster Cards with Membership Pills */}
-        {(viewMode === 'all' || viewMode === 'cards') && (
-          <MonsterCards
+        {/* Tab 2: Pestaña de Monstruos (con selector y tabla con membresía y cantidad de votos) */}
+        {activeTab === 'monsters' && (
+          <MonsterDetailTab
             monsters={monsters}
-            totalVotes={totalVotes}
-            onSelectMonster={(num) => {
-              setSelectedMonster(num);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            selectedMonsterNumber={selectedMonsterNumber}
+            onSelectMonster={setSelectedMonsterNumber}
+            onAddVote={handleVoteSubmit}
             onRemoveVote={handleRemoveVote}
+          />
+        )}
+
+        {/* Tab 3: Captura Rápida de Votos de papelitos */}
+        {activeTab === 'capture' && (
+          <VoteCaptureTab
+            monsters={monsters}
+            selectedMonster={selectedMonsterNumber}
+            setSelectedMonster={setSelectedMonsterNumber}
+            onVoteSubmit={handleVoteSubmit}
+            onRemoveVote={handleRemoveVote}
+            recentVotes={recentVotes}
+            submitting={submitting}
           />
         )}
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-slate-900 bg-slate-950/80 px-4 py-4 text-center text-xs text-slate-500">
-        Carrera de Monstruos &bull; Sistema de Conteo de Votos en Tiempo Real con React, Vite, Node.js y Docker
+      <footer className="mt-auto border-t border-slate-800 bg-slate-950 py-3 text-center text-xs text-slate-500">
+        Carrera de Monstruos &bull; Sistema de Conteo de Votos
       </footer>
 
       {/* Modals */}
@@ -377,11 +350,8 @@ export default function App() {
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
         monsters={monsters}
+        onAddVote={handleVoteSubmit}
         onRemoveVote={handleRemoveVote}
-        onSelectMonsterForVote={(num) => {
-          setSelectedMonster(num);
-          setSearchOpen(false);
-        }}
       />
 
       <SettingsModal
