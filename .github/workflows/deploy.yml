@@ -26,10 +26,10 @@ jobs:
           cache: 'npm'
 
       - name: Install root dependencies
-        run: npm ci
+        run: npm install
 
       - name: Install client dependencies
-        run: npm --prefix client ci
+        run: npm --prefix client install
 
       - name: Run automated tests
         run: npm test

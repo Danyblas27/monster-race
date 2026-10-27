@@ -7,7 +7,7 @@ FROM node:22-alpine AS client-builder
 WORKDIR /app/client
 
 COPY client/package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY client/ ./
 RUN npm run build
@@ -23,7 +23,7 @@ ENV DATA_DIR=/app/data
 
 # Copy root server package definitions and install production dependencies
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 
 # Copy server code and default data
 COPY server/ ./server/
