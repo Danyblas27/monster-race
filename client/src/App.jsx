@@ -240,7 +240,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="mt-auto border-t border-[#493e4c] bg-[#2a232b] py-3 text-center text-xs text-[#b8adb9]">
-        <span className="font-cinzel text-sm font-bold text-[#FFC341] mr-1">Monster Race</span> &bull; Dany Blasquez &bull; Live Vote Counting System
+        <span className="font-cinzel text-sm font-bold text-[#FFC341] mr-1">Monster Race</span> &bull; Daniel Blasquez Chacón &bull; Live Vote Counting System
       </footer>
     </div>
   );
