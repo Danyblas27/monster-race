@@ -58,11 +58,11 @@ export default function VoteCaptureTab({
 
   return (
     <div className="space-y-6">
-      {/* 10 Monster Selection - LARGE HALLOWEEN CARDS */}
+      {/* 10 Monster Selection - LARGE CARDS */}
       <div className="bg-[#373038] border border-[#4d4250] rounded-2xl p-4 sm:p-5 shadow-xl">
         <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#4d4250]">
           <div>
-            <h2 className="font-gothic text-2xl text-white tracking-wide">
+            <h2 className="font-cinzel text-xl sm:text-2xl text-white font-bold tracking-wide">
               Step 1: Select Monster from Ballot Paper
             </h2>
             <p className="text-xs text-[#c9bfcc]">Click on any monster card below</p>
@@ -121,13 +121,10 @@ export default function VoteCaptureTab({
                   )}
                 </div>
 
-                {/* Card Bottom: Name & Emoji */}
+                {/* Card Bottom: Name (Legible Cinzel font, No emojis) */}
                 <div className="p-3 bg-[#322a34] border-t border-[#4d4250] flex items-center justify-between">
-                  <span className="font-gothic text-base text-white tracking-wide truncate">
+                  <span className="font-cinzel text-xs sm:text-sm font-bold text-white tracking-wide truncate">
                     {monster.name}
-                  </span>
-                  <span className="text-base select-none shrink-0 ml-1">
-                    {monster.emoji}
                   </span>
                 </div>
               </div>
@@ -139,7 +136,7 @@ export default function VoteCaptureTab({
       {/* Ballot Entry Form */}
       <div className="bg-[#373038] border border-[#4d4250] rounded-2xl p-4 sm:p-5 shadow-xl">
         <div className="mb-3">
-          <span className="font-gothic text-lg text-[#FFC341] tracking-wide block">
+          <span className="font-cinzel text-base sm:text-lg text-[#FFC341] font-bold tracking-wide block">
             Step 2: Enter Membership Number from Ballot
           </span>
         </div>
@@ -162,7 +159,7 @@ export default function VoteCaptureTab({
                     Selected Monster
                   </span>
                 </div>
-                <div className="font-gothic text-xl text-white tracking-wide">
+                <div className="font-cinzel text-lg sm:text-xl font-bold text-white tracking-wide">
                   {currentMonsterObj?.name}
                 </div>
               </div>
@@ -247,7 +244,7 @@ export default function VoteCaptureTab({
                   key={rv.id || `${rv.membership}-${idx}`}
                   className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-[#211c22] border border-[#4d4250] text-[#e2dbe6] text-xs shrink-0"
                 >
-                  <span className="font-gothic text-sm text-[#FFC341]">#{rv.monsterNumber} {rv.monsterName}</span>
+                  <span className="font-cinzel text-xs font-bold text-[#FFC341]">#{rv.monsterNumber} {rv.monsterName}</span>
                   <span className="font-mono font-black text-white bg-[#373038] px-1.5 py-0.5 rounded border border-[#4d4250]">
                     {rv.membership}
                   </span>

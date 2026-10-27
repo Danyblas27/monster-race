@@ -7,7 +7,7 @@ import {
   resetAllVotes
 } from '../server/storage.js';
 
-console.log('🧪 Running tests for Monster Race Voting System...');
+console.log('[TEST] Running tests for Monster Race Voting System...');
 
 // 1. Initial monsters
 const monsters = getMonsters();
@@ -73,4 +73,4 @@ const allCleared = getMonsters().every(m => m.votes === 0 && m.memberships.lengt
 assert.ok(allCleared, 'All votes must be reset to 0');
 console.log('✅ Reset all votes works correctly.');
 
-console.log('🎉 All storage tests passed successfully!');
+console.log('[SUCCESS] All storage tests passed successfully!');

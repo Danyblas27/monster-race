@@ -13,29 +13,18 @@ export default function Header({
       <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-[#862FE0] via-[#FB702D] to-[#88E032]" />
 
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
-        {/* Brand / Logo with Halloween typography */}
-        <div className="flex items-center gap-3">
-          <span className="text-2xl select-none">🎃</span>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-spooky text-2xl sm:text-3xl text-[#FB702D] tracking-wider leading-none drop-shadow-sm">
-                MONSTER RACE
-              </h1>
-              <span className="bg-[#373038] text-[#FFC341] text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-[#524555]">
-                10 Monsters
-              </span>
-            </div>
-            <p className="text-[11px] text-[#b8adb9] font-medium">
-              Halloween Live Vote Counter
-            </p>
-          </div>
+        {/* Brand / Logo: ONLY "MONSTER RACE" */}
+        <div className="flex items-center">
+          <h1 className="font-spooky text-2xl sm:text-3xl text-[#FB702D] tracking-wider leading-none drop-shadow-sm select-none">
+            MONSTER RACE
+          </h1>
         </div>
 
         {/* Navigation Tabs in the Navbar */}
         <div className="flex items-center gap-1.5 bg-[#211c22] p-1 rounded-xl border border-[#493e4c]">
           <button
             onClick={() => setActiveTab('summary')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
               activeTab === 'summary'
                 ? 'bg-[#862FE0] text-white shadow-md shadow-[#862FE0]/30'
                 : 'text-[#c9bfcc] hover:text-white hover:bg-[#373038]'
@@ -47,7 +36,7 @@ export default function Header({
 
           <button
             onClick={() => setActiveTab('monsters')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
               activeTab === 'monsters'
                 ? 'bg-[#862FE0] text-white shadow-md shadow-[#862FE0]/30'
                 : 'text-[#c9bfcc] hover:text-white hover:bg-[#373038]'
@@ -59,7 +48,7 @@ export default function Header({
 
           <button
             onClick={() => setActiveTab('capture')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
               activeTab === 'capture'
                 ? 'bg-[#862FE0] text-white shadow-md shadow-[#862FE0]/30'
                 : 'text-[#c9bfcc] hover:text-white hover:bg-[#373038]'
@@ -70,7 +59,7 @@ export default function Header({
           </button>
         </div>
 
-        {/* Sync Status Badge with Lime Green Accent */}
+        {/* Sync Status Badge */}
         <div className="flex items-center">
           <div
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border ${

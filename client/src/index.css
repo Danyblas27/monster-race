@@ -12,7 +12,7 @@
   --color-h-yellow: #FFC341;
 
   --font-spooky: 'Creepster', cursive;
-  --font-gothic: 'Pirata One', cursive;
+  --font-cinzel: 'Cinzel', serif;
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
@@ -35,9 +35,9 @@
   letter-spacing: 0.05em;
 }
 
-.font-gothic {
-  font-family: 'Pirata One', cursive;
-  letter-spacing: 0.04em;
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.03em;
 }
 
 /* Custom Halloween scrollbar */

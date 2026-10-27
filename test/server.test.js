@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.join(__dirname, '..');
 
-console.log('🚀 Starting Server integration test...');
+console.log('[TEST] Starting Server integration test...');
 
 // Spawn node server/index.js on custom port 3999
 const serverProcess = spawn('node', ['server/index.js'], {
@@ -117,7 +117,7 @@ async function run() {
     });
     console.log('✅ Cleaned up test data.');
 
-    console.log('🎉 All Server Integration tests passed!');
+    console.log('[SUCCESS] All Server Integration tests passed!');
   } finally {
     serverProcess.kill();
   }

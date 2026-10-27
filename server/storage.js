@@ -220,7 +220,7 @@ export function findMembership(membership) {
       breakdown.push({
         number: m.number,
         name: m.name,
-        emoji: m.emoji,
+        image: m.image,
         color: m.color,
         count
       });

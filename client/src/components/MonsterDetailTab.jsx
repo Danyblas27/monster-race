@@ -45,11 +45,11 @@ export default function MonsterDetailTab({
 
   return (
     <div className="space-y-6">
-      {/* 10 Monster Selection - LARGE HALLOWEEN CARDS */}
+      {/* 10 Monster Selection - LARGE CARDS */}
       <div className="bg-[#373038] border border-[#4d4250] rounded-2xl p-4 sm:p-5 shadow-xl">
         <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#4d4250]">
           <div>
-            <h2 className="font-gothic text-2xl text-white tracking-wide">
+            <h2 className="font-cinzel text-xl sm:text-2xl text-white font-bold tracking-wide">
               Select a Monster
             </h2>
             <p className="text-xs text-[#c9bfcc]">Click a card below to inspect its voter table</p>
@@ -81,14 +81,14 @@ export default function MonsterDetailTab({
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
                   />
 
-                  {/* Monster Number Badge in Halloween Orange */}
+                  {/* Monster Number Badge */}
                   <div className="absolute top-2 left-2 z-10">
                     <span className="px-2 py-0.5 rounded-md text-xs font-black text-white bg-[#FB702D] shadow-lg flex items-center gap-1">
                       #{m.number}
                     </span>
                   </div>
 
-                  {/* Vote Count Badge in Halloween Lime Green */}
+                  {/* Vote Count Badge in Lime Green */}
                   <div className="absolute top-2 right-2 z-10">
                     <span className="px-2 py-0.5 rounded-md text-[11px] font-mono font-bold bg-[#211c22]/95 text-[#88E032] border border-[#88E032]/40 shadow">
                       {m.votes} {m.votes === 1 ? 'vote' : 'votes'}
@@ -105,13 +105,10 @@ export default function MonsterDetailTab({
                   )}
                 </div>
 
-                {/* Card Bottom: Name & Emoji */}
+                {/* Card Bottom: Name (Legible Cinzel font, No emojis) */}
                 <div className="p-3 bg-[#322a34] border-t border-[#4d4250] flex items-center justify-between">
-                  <span className="font-gothic text-base text-white tracking-wide truncate">
+                  <span className="font-cinzel text-xs sm:text-sm font-bold text-white tracking-wide truncate">
                     {m.name}
-                  </span>
-                  <span className="text-base select-none shrink-0 ml-1">
-                    {m.emoji}
                   </span>
                 </div>
               </div>
@@ -136,10 +133,9 @@ export default function MonsterDetailTab({
                 <span className="px-2.5 py-0.5 rounded-md text-xs font-black text-white bg-[#FB702D] shadow">
                   #{currentMonster.number}
                 </span>
-                <h2 className="font-gothic text-3xl sm:text-4xl text-white tracking-wide leading-tight">
+                <h2 className="font-cinzel text-2xl sm:text-3xl text-white font-extrabold tracking-wide leading-tight">
                   {currentMonster.name}
                 </h2>
-                <span className="text-2xl">{currentMonster.emoji}</span>
               </div>
               <div className="text-xs text-[#c9bfcc]">
                 Total accumulated: <strong className="text-[#FFC341] font-mono text-base font-black">{currentMonster.votes}</strong> votes from{' '}
@@ -178,14 +174,14 @@ export default function MonsterDetailTab({
 
         {errorMsg && (
           <div className="mt-2 text-xs text-[#FB702D] font-semibold bg-[#3c1d25] p-2 rounded-lg border border-[#FB702D]/40">
-            ⚠️ {errorMsg}
+            {errorMsg}
           </div>
         )}
 
         {/* Filter bar */}
         <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="text-xs text-white font-bold flex items-center gap-2">
-            <span className="font-gothic text-lg text-[#FFC341]">Voter Memberships List</span>
+            <span className="font-cinzel text-base text-[#FFC341] font-bold">Voter Memberships List</span>
             <span className="text-[#c9bfcc] font-normal">
               ({filteredVoters.length} {filteredVoters.length === 1 ? 'member' : 'members'})
             </span>

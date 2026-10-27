@@ -15,6 +15,13 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
     }
   }
 
+  const getRankLabel = (index) => {
+    if (index === 0) return '1st';
+    if (index === 1) return '2nd';
+    if (index === 2) return '3rd';
+    return `${index + 1}th`;
+  };
+
   return (
     <div className="space-y-5">
       {/* KPI Cards */}
@@ -40,7 +47,7 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
           <div className="text-lg font-bold text-white truncate flex items-center gap-3">
             <MonsterAvatar monster={leader} size="md" className="rounded-xl shadow ring-1 ring-[#FFC341]/40" />
             <div>
-              <div className="font-gothic text-xl text-[#FFC341] tracking-wide leading-tight">
+              <div className="font-cinzel text-lg sm:text-xl font-bold text-[#FFC341] tracking-wide leading-tight">
                 {leader ? `#${leader.number} ${leader.name}` : '-'}
               </div>
               <div className="text-xs text-[#88E032] font-mono font-bold">
@@ -68,9 +75,8 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
       <div className="bg-[#373038] border border-[#4d4250] rounded-2xl overflow-hidden shadow-xl">
         <div className="p-4 border-b border-[#4d4250] flex items-center justify-between bg-[#2d272f]">
           <div>
-            <h2 className="font-gothic text-xl text-white tracking-wide flex items-center gap-2">
-              <span className="text-[#FB702D]">🎃</span>
-              <span>Global Standings (10 Monsters)</span>
+            <h2 className="font-cinzel text-lg sm:text-xl font-bold text-white tracking-wide">
+              Global Standings (10 Monsters)
             </h2>
             <p className="text-xs text-[#c9bfcc]">Ranked from highest to lowest vote count</p>
           </div>
@@ -101,19 +107,25 @@ export default function GlobalSummary({ monsters, totalVotes, onSelectMonster })
                     className="hover:bg-[#433845] transition-colors"
                   >
                     <td className="py-3 px-4 text-center font-mono font-black text-slate-300">
-                      {isLeader
-                        ? '🥇'
-                        : index === 1 && monster.votes > 0
-                        ? '🥈'
-                        : index === 2 && monster.votes > 0
-                        ? '🥉'
-                        : `${index + 1}`}
+                      <span
+                        className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold ${
+                          isLeader
+                            ? 'bg-[#FFC341] text-[#211c22]'
+                            : index === 1 && monster.votes > 0
+                            ? 'bg-slate-300 text-[#211c22]'
+                            : index === 2 && monster.votes > 0
+                            ? 'bg-[#FB702D] text-white'
+                            : 'text-[#c9bfcc]'
+                        }`}
+                      >
+                        {getRankLabel(index)}
+                      </span>
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
                         <MonsterAvatar monster={monster} size="md" className="rounded-lg shadow" />
                         <div>
-                          <span className="font-gothic text-lg text-white tracking-wide block">
+                          <span className="font-cinzel text-sm sm:text-base font-bold text-white tracking-wide block">
                             #{monster.number} {monster.name}
                           </span>
                         </div>

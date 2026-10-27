@@ -39,7 +39,9 @@ export default function MonsterAvatar({
           loading="lazy"
         />
       ) : (
-        <span className="select-none font-sans">{monster?.emoji || '👾'}</span>
+        <span className="select-none font-mono font-black text-xs text-[#FFC341]">
+          #{monster?.number}
+        </span>
       )}
     </div>
   );
