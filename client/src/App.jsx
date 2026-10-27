@@ -173,21 +173,21 @@ export default function App() {
   const totalVotes = monsters.reduce((acc, m) => acc + (m.votes || 0), 0);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#211c22] text-[#f3eff5] flex flex-col font-sans">
       {/* Toast Notification */}
       {notification && (
-        <div className="fixed top-16 right-4 z-50 max-w-sm w-full p-3 rounded-xl bg-slate-950 border border-slate-700 shadow-xl text-xs flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
+        <div className="fixed top-16 right-4 z-50 max-w-sm w-full p-3.5 rounded-xl bg-[#373038] border border-[#4d4250] shadow-2xl text-xs flex items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2.5">
             {notification.type === 'error' ? (
-              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+              <AlertCircle className="w-4 h-4 text-[#FB702D] shrink-0" />
             ) : (
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-[#88E032] shrink-0" />
             )}
-            <span className="text-slate-200">{notification.text}</span>
+            <span className="text-white font-medium">{notification.text}</span>
           </div>
           <button
             onClick={() => setNotification(null)}
-            className="text-slate-500 hover:text-white ml-2"
+            className="text-[#b8adb9] hover:text-white ml-2 text-sm"
           >
             ✕
           </button>
@@ -239,8 +239,8 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-slate-800 bg-slate-950 py-3 text-center text-xs text-slate-500">
-        Monster Race &bull; Live Vote Counting System
+      <footer className="mt-auto border-t border-[#493e4c] bg-[#2a232b] py-3 text-center text-xs text-[#b8adb9]">
+        <span className="font-gothic text-sm text-[#FFC341] mr-1">Monster Race</span> &bull; Traditional Halloween Edition &bull; Live Vote Counting System
       </footer>
     </div>
   );

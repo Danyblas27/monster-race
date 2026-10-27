@@ -25,9 +25,9 @@ export default function MonsterAvatar({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center shrink-0 overflow-hidden bg-slate-950 border border-slate-800 ${sizeClasses[size] || sizeClasses.md} ${className}`}
+      className={`relative inline-flex items-center justify-center shrink-0 overflow-hidden bg-[#211c22] border border-[#493e4c] ${sizeClasses[size] || sizeClasses.md} ${className}`}
       style={{
-        borderColor: monster?.color ? `${monster.color}40` : undefined,
+        borderColor: monster?.color ? `${monster.color}60` : undefined,
       }}
     >
       {!imgError && imageSrc ? (

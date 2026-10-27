@@ -1,27 +1,61 @@
 @import "tailwindcss";
 
+@theme {
+  --color-h-charcoal: #373038;
+  --color-h-dark: #211c22;
+  --color-h-border: #4f4551;
+  --color-h-purple: #862FE0;
+  --color-h-purple-hover: #9948ef;
+  --color-h-green: #88E032;
+  --color-h-orange: #FB702D;
+  --color-h-orange-hover: #fc844a;
+  --color-h-yellow: #FFC341;
+
+  --font-spooky: 'Creepster', cursive;
+  --font-gothic: 'Pirata One', cursive;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
 @layer base {
   body {
-    @apply bg-slate-900 text-slate-100 min-h-screen antialiased;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #211c22;
+    color: #f3eff5;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.01em;
   }
 }
 
-/* Clean scrollbar */
+.font-spooky {
+  font-family: 'Creepster', cursive;
+  letter-spacing: 0.05em;
+}
+
+.font-gothic {
+  font-family: 'Pirata One', cursive;
+  letter-spacing: 0.04em;
+}
+
+/* Custom Halloween scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #211c22;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 3px;
+  background: #373038;
+  border: 1px solid #4f4551;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #862FE0;
 }
